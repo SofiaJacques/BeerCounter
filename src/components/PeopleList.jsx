@@ -40,7 +40,31 @@ function Person({ person, crates, handleAddBottle }) {
     );
   }
 
-  function showInformation() {}
+  function drawAmountBeer(bottleN, crate) {
+    return (
+      <>
+        <GiBeerBottle style={{ color: crate.color }}></GiBeerBottle>:{"\u00A0"}
+        {(crate.price / crate.totalBottles) * bottleN}€
+      </>
+    );
+  }
+
+  function showInformation() {
+    var elem = document.getElementById(person.name);
+    if (elem.style.display === "none") {
+      elem.style.display = "";
+    } else {
+      elem.style.display = "none";
+    }
+  }
+
+  const totalBeers = (bottles) => {
+    var sum = 0;
+    bottles.forEach((bottle) => {
+      sum = sum + bottle.amount;
+    });
+    return sum;
+  };
 
   const popover = (
     <Popover id="popover-basic">
@@ -65,8 +89,8 @@ function Person({ person, crates, handleAddBottle }) {
 
   return (
     <>
-      <Row className="pb-1 d-flex align-items-center">
-        <Col xs={2} onClick={showInformation}>
+      <Row className="pb-1 pt-1 d-flex align-items-center">
+        <Col xs={2} onClick={showInformation} style={{ cursor: "pointer" }}>
           <span>{person.name}</span>
         </Col>
         <Col xs={8} sm={9}>
@@ -85,7 +109,20 @@ function Person({ person, crates, handleAddBottle }) {
           </OverlayTrigger>
         </Col>
       </Row>
-      <Row id={person.name}></Row>
+      <Row
+        className="rounded h5"
+        style={{ display: "none", backgroundColor: "#434957", fontWeight: 300 }}
+        id={person.name}>
+        <Col>Total beers: {totalBeers(person.bottles)}</Col>
+        {person.bottles.map((beer) => (
+          <Col>
+            {drawAmountBeer(
+              beer.amount,
+              crates.filter((crate) => crate.id == beer.from_crate)[0]
+            )}
+          </Col>
+        ))}
+      </Row>
     </>
   );
 }
@@ -100,6 +137,9 @@ function PeopleList({ people, crates, handleAddBottle, handleAddPerson }) {
           crates={crates}
           handleAddBottle={handleAddBottle}></Person>
       ))}
+      <p className="h6" style={{ fontWeight: 200 }}>
+        <em>Click on your name for more information!</em>
+      </p>
       <Row className="mt-2 d-flex justify-content-end">
         <InputButton handleSubmit={handleAddPerson}></InputButton>
       </Row>

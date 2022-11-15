@@ -8,6 +8,7 @@
           "brand": "Estrella",
           "owner": "Sofia",
           "numBottles": 20,
+          "totalBottles": 20,
           "price": 30,
           "color": "#96278d"
         },
@@ -16,6 +17,7 @@
           "brand": "Heineken",
           "owner": "Marco",
           "numBottles": 24,
+          "totalBottles": 24,
           "price": 12,
           "color": "green"
         }
