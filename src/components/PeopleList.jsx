@@ -3,7 +3,7 @@ import { GiBeerBottle } from "react-icons/gi";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import Container from "react-bootstrap/Container";
+import { InputButton } from "./FormElements";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -40,6 +40,8 @@ function Person({ person, crates, handleAddBottle }) {
     );
   }
 
+  function showInformation() {}
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body className="d-flex">
@@ -62,30 +64,35 @@ function Person({ person, crates, handleAddBottle }) {
   );
 
   return (
-    <Row className="pb-1 d-flex">
-      <Col>
-        <span>{person.name}</span>
-        {person.bottles.map((beer) =>
-          drawBottles(
-            beer.amount,
-            crates.filter((crate) => crate.id == beer.from_crate)[0].color
-          )
-        )}
-      </Col>
-      <Col xs="auto">
-        <OverlayTrigger trigger="click" placement="top" overlay={popover}>
-          <Button size="sm" variant="secondary" onClick={handleClick}>
-            {buttonText}
-          </Button>
-        </OverlayTrigger>
-      </Col>
-    </Row>
+    <>
+      <Row className="pb-1 d-flex align-items-center">
+        <Col xs={2} onClick={showInformation}>
+          <span>{person.name}</span>
+        </Col>
+        <Col xs={8} sm={9}>
+          {person.bottles.map((beer) =>
+            drawBottles(
+              beer.amount,
+              crates.filter((crate) => crate.id == beer.from_crate)[0].color
+            )
+          )}
+        </Col>
+        <Col xs={2} sm={1} className="d-flex justify-content-end">
+          <OverlayTrigger trigger="click" placement="top" overlay={popover}>
+            <Button size="sm" variant="secondary" onClick={handleClick}>
+              {buttonText}
+            </Button>
+          </OverlayTrigger>
+        </Col>
+      </Row>
+      <Row id={person.name}></Row>
+    </>
   );
 }
 
-function PeopleList({ people, crates, handleAddBottle }) {
+function PeopleList({ people, crates, handleAddBottle, handleAddPerson }) {
   return (
-    <Container>
+    <div>
       {people.map((person, i) => (
         <Person
           person={person}
@@ -93,7 +100,10 @@ function PeopleList({ people, crates, handleAddBottle }) {
           crates={crates}
           handleAddBottle={handleAddBottle}></Person>
       ))}
-    </Container>
+      <Row className="mt-2 d-flex justify-content-end">
+        <InputButton handleSubmit={handleAddPerson}></InputButton>
+      </Row>
+    </div>
   );
 }
 

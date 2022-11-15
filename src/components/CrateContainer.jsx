@@ -1,6 +1,5 @@
 import React from "react";
 import CreateCrate from "./CreateCrate";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -20,8 +19,8 @@ function Crate(crate) {
 
 function CrateContainer({ crates, handleAddData }) {
   return (
-    <Container>
-      <Row style={{ alignItems: "center" }}>
+    <div>
+      <Row style={{ alignItems: "center" }} className="mb-5">
         {crates.map((crate) => (
           <Crate key={crate.id} data={crate}></Crate>
         ))}
@@ -29,7 +28,7 @@ function CrateContainer({ crates, handleAddData }) {
           <CreateCrate handleAddData={handleAddData}></CreateCrate>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
 

@@ -6,10 +6,11 @@ function DropdownFunction({ handleDropdown, tableList }) {
   const [selectText, setselectText] = useState("Join Table");
   function handleSelect(e) {
     handleDropdown(e);
-    setselectText(e == -1 ? "Join Table" : "Table # " + e);
+    setselectText(e == -1 ? "Create Table" : "Table # " + e);
   }
   return (
     <DropdownButton
+      className="pb-2"
       id="dropdown-basic-button"
       variant="secondary"
       title={selectText}
@@ -20,7 +21,7 @@ function DropdownFunction({ handleDropdown, tableList }) {
         </Dropdown.Item>
       ))}
       <Dropdown.Item key={-1} eventKey={-1}>
-        Join Table
+        Create Table
       </Dropdown.Item>
     </DropdownButton>
   );
