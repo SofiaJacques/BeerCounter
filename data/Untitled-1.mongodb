@@ -1,0 +1,66 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('beerCounter');
+
+// The drop() command destroys all data from a collection.
+// Make sure you run it against the correct database and collection.
+db.tables.drop();
+db.people.drop();
+db.crates.drop();
+// Insert a few documents into the sales collection.
+db.tables.insertMany([
+  {"_id": ObjectId(1), "name": "Warriors", "crates":[{
+          "_id": 1,
+          "brand": "Estrella",
+          "owner": "Sofia",
+          "numBottles": 20,
+          "totalBottles": 20,
+          "price": 30,
+          "color": "#96278d"
+        },
+        {
+          "_id": 2,
+          "brand": "Heineken",
+          "owner": "Marco",
+          "numBottles": 24,
+          "totalBottles": 24,
+          "price": 12,
+          "color": "green"
+        }]},
+  {"_id": ObjectId(2), "name": "Bugwiser"}
+]);
+
+db.people.insertMany([
+  {
+          "name": "Sofia",
+          "tableId": ObjectId(1),
+          "bottles": [
+            {
+              "crateId": 1,
+              "amount": 5
+            },
+            {
+              "crateId": 2,
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "name": "Marco",
+          "tableId" : ObjectId(1),
+          "bottles": [
+            {
+              "crateId": 1,
+              "amount": 1
+            },
+            {
+              "crateId": 2,
+              "amount": 12
+            }
+          ]
+        }
+])

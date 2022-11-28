@@ -1,21 +1,34 @@
 import "./App.css";
-import data from "./data/data.json";
-import Home from "./components/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import DropdownFunction from "./components/DropdownFunction";
+import BeerTable from "./pages/BeerTable";
+import CreateTable from "./pages/CreateTable";
+import beerService from "./requests/beerService";
 
 function App() {
-  const [datx, setData] = useState(null);
+  const [toggleFetch, settoggleFetch] = useState(true);
+  const [datx, setData] = useState();
+  function fireEffect() {
+    beerService.getTables().then((data) => setData(data));
+  }
+
   useEffect(() => {
-    fetch("/api/tables")
-      .then((response) => response.json())
-      .then(setData);
+    const data = beerService.getTables().then((data) => setData(data));
+    console.log("refreshed data");
   }, []);
-  console.log(datx);
 
   return (
     <div className="App-header">
-      <pre>{JSON.stringify(datx, null, 2)}</pre>
-      <Home data={data}></Home>
+      <BrowserRouter>
+        {datx && (
+          <Routes>
+            <Route path="/" element={<DropdownFunction tableList={datx.tables}></DropdownFunction>}></Route>
+            <Route path="/createTable" element={<CreateTable updateFetch={fireEffect}></CreateTable>}></Route>
+            <Route path="/:tableName" element={<BeerTable tableList={datx.tables}></BeerTable>}></Route>
+          </Routes>
+        )}
+      </BrowserRouter>
     </div>
   );
 }

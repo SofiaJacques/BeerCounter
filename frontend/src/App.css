@@ -44,3 +44,11 @@
     transform: rotate(360deg);
   }
 }
+
+.gBtn {
+  height: 19px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  line-height: 10px !important;
+  margin-bottom: 2px;
+}

@@ -13,7 +13,6 @@ function CrateCrate({ handleAddData }) {
     color: "#3D7B4F",
     numBottles: null,
     price: null,
-    totalBottles: null,
   };
   const [show, setShow] = useState(false);
   const [input, setInput] = useState(defaultInput);

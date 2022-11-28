@@ -25,8 +25,8 @@ function Person({ person, crates, handleAddBottle }) {
     setselectedColor({ color: colors[e - 1].color, id: e });
   }
 
-  function handleAddBeer() {
-    handleAddBottle(person.name, selectedCrate.id);
+  function handleAddBeer(sign) {
+    handleAddBottle(person.name, selectedCrate.id, sign);
   }
 
   function drawBottles(bottleN, color) {
@@ -79,9 +79,22 @@ function Person({ person, crates, handleAddBottle }) {
             </Dropdown.Item>
           ))}
         </DropdownButton>
-        <Button size="sm" variant="secondary" onClick={handleAddBeer}>
-          +
-        </Button>
+        <div className="d-grid">
+          <Button
+            className="gBtn"
+            size="sm"
+            variant="secondary"
+            onClick={() => handleAddBeer("+")}>
+            +
+          </Button>
+          <Button
+            className="gBtn"
+            size="sm"
+            variant="secondary"
+            onClick={() => handleAddBeer("-")}>
+            -
+          </Button>
+        </div>
       </Popover.Body>
     </Popover>
   );
@@ -139,9 +152,6 @@ function PeopleList({ people, crates, handleAddBottle, handleAddPerson }) {
       <p className="h6" style={{ fontWeight: 200 }}>
         <em>Click on your name for more information!</em>
       </p>
-      <Row className="mt-2 d-flex justify-content-end">
-        <InputButton handleSubmit={handleAddPerson}></InputButton>
-      </Row>
     </div>
   );
 }
