@@ -1,5 +1,3 @@
-import { parse } from "dotenv";
-
 class beerService {
   parseJSON(response) {
     return new Promise((resolve) =>
