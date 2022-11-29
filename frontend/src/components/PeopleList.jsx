@@ -10,23 +10,20 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 function Person({ person, crates, handleAddBottle }) {
-  const colors = crates.map((item) => ({ color: item.color, id: item.id }));
+  const colors = crates.map((item) => ({ color: item.color, id: item._id }));
   const [selectedCrate, setselectedColor] = useState({
     color: colors[0].color,
     id: colors[0].id,
   });
 
-  const [buttonText, setbuttonText] = useReducer(
-    (buttonText) => (buttonText === "+" ? "-" : "+"),
-    "+"
-  );
+  const [buttonText, setbuttonText] = useReducer((buttonText) => (buttonText === "+" ? "-" : "+"), "+");
 
   function handleSelect(e) {
-    setselectedColor({ color: colors[e - 1].color, id: e });
+    setselectedColor(colors.find((color) => color.id === e));
   }
 
-  function handleAddBeer(sign) {
-    handleAddBottle(person.name, selectedCrate.id, sign);
+  function handleAddBeer(increase) {
+    handleAddBottle(person.name, selectedCrate.id, increase);
   }
 
   function drawBottles(bottleN, color) {
@@ -80,18 +77,10 @@ function Person({ person, crates, handleAddBottle }) {
           ))}
         </DropdownButton>
         <div className="d-grid">
-          <Button
-            className="gBtn"
-            size="sm"
-            variant="secondary"
-            onClick={() => handleAddBeer("+")}>
+          <Button className="gBtn" size="sm" variant="secondary" onClick={() => handleAddBeer(true)}>
             +
           </Button>
-          <Button
-            className="gBtn"
-            size="sm"
-            variant="secondary"
-            onClick={() => handleAddBeer("-")}>
+          <Button className="gBtn" size="sm" variant="secondary" onClick={() => handleAddBeer(false)}>
             -
           </Button>
         </div>
@@ -107,10 +96,7 @@ function Person({ person, crates, handleAddBottle }) {
         </Col>
         <Col xs={8} sm={9}>
           {person.bottles.map((beer) =>
-            drawBottles(
-              beer.amount,
-              crates.filter((crate) => crate.id == beer.from_crate)[0].color
-            )
+            drawBottles(beer.amount, crates.filter((crate) => crate._id == beer.crateId)[0].color)
           )}
         </Col>
         <Col xs={2} sm={1} className="d-flex justify-content-end">
@@ -127,12 +113,7 @@ function Person({ person, crates, handleAddBottle }) {
         id={person.name}>
         <Col>Total beers: {totalBeers(person.bottles)}</Col>
         {person.bottles.map((beer) => (
-          <Col>
-            {drawAmountBeer(
-              beer.amount,
-              crates.filter((crate) => crate.id == beer.from_crate)[0]
-            )}
-          </Col>
+          <Col>{drawAmountBeer(beer.amount, crates.filter((crate) => crate._id == beer.crateId)[0])}</Col>
         ))}
       </Row>
     </>
@@ -143,11 +124,7 @@ function PeopleList({ people, crates, handleAddBottle, handleAddPerson }) {
   return (
     <div>
       {people.map((person, i) => (
-        <Person
-          person={person}
-          key={i}
-          crates={crates}
-          handleAddBottle={handleAddBottle}></Person>
+        <Person person={person} key={i} crates={crates} handleAddBottle={handleAddBottle}></Person>
       ))}
       <p className="h6" style={{ fontWeight: 200 }}>
         <em>Click on your name for more information!</em>

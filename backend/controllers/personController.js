@@ -1,5 +1,6 @@
 //with mongoose they return a promise. With async have to use try catch.
 const Table = require("../models/tableModel");
+const asyncHandler = require("express-async-handler");
 
 // @desc    get people
 // @route   GET /api/people
@@ -12,17 +13,20 @@ const getPeople = async (req, res) => {
 // @desc    create a person
 // @route   POST /api/people
 // @access  Private
-const addPerson = async (req, res) => {
-  if (!req.body.name) {
-    res.status(400).json({ message: "Please add Person information" });
+const addPerson = asyncHandler(async (req, res) => {
+  const { tableName, personData } = req.body;
+  if (!tableName || !personData || !personData.name) {
+    res.status(400);
+    throw new Error("No body in request. Please give a person name");
   }
-  const pers = await People.create({
-    name: "Test",
-    tableId: 4,
-    bottles: [{ crateID: 2, amount: 3 }],
-  });
-  res.status(200).json({ message: "Create a Person" });
-};
+  const table = await Table.findOne({ name: tableName });
+  if (!table) {
+    res.status(400);
+    throw new Error("Table not found");
+  }
+  table.people = [...table.people, personData];
+  table.save().then(() => res.status(200).json({ json: personData }));
+});
 
 // @desc    modify a person
 // @route   PUT /api/people/:id

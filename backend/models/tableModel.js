@@ -1,8 +1,8 @@
 //here is where we define our schema, fields for this particular resource
 const mongoose = require("mongoose");
 
-const tableModel = mongoose.Schema({
-  name: { type: String, unique: true },
+const tableModel = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
   crates: [
     {
       brand: String,
@@ -15,8 +15,8 @@ const tableModel = mongoose.Schema({
   ],
   people: [
     {
-      name: String,
-      bottles: [{ crateID: Number, amount: Number }],
+      name: { type: String, required: true, unique: true },
+      bottles: [{ crateId: String, amount: Number }],
     },
   ],
 });

@@ -9,9 +9,12 @@ import beerService from "./requests/beerService";
 function App() {
   const [toggleFetch, settoggleFetch] = useState(true);
   const [datx, setData] = useState();
-  function fireEffect() {
-    beerService.getTables().then((data) => setData(data));
-  }
+
+  const updateFetch = () =>
+    beerService
+      .getTables()
+      .then((data) => setData(data))
+      .then(() => console.log("updated!"));
 
   useEffect(() => {
     const data = beerService.getTables().then((data) => setData(data));
@@ -24,7 +27,9 @@ function App() {
         {datx && (
           <Routes>
             <Route path="/" element={<DropdownFunction tableList={datx.tables}></DropdownFunction>}></Route>
-            <Route path="/createTable" element={<CreateTable updateFetch={fireEffect}></CreateTable>}></Route>
+            <Route
+              path="/createTable"
+              element={<CreateTable updateFetch={updateFetch}></CreateTable>}></Route>
             <Route path="/:tableName" element={<BeerTable tableList={datx.tables}></BeerTable>}></Route>
           </Routes>
         )}
