@@ -3,7 +3,6 @@ import { GiBeerBottle } from "react-icons/gi";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import { InputButton } from "./FormElements";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -40,7 +39,7 @@ function Person({ person, crates, handleAddBottle }) {
     return (
       <>
         <GiBeerBottle style={{ color: crate.color }}></GiBeerBottle>:{"\u00A0"}
-        {(crate.price / crate.totalBottles) * bottleN}€
+        {((crate.price / crate.totalBottles) * bottleN).toFixed(2)}€
       </>
     );
   }
@@ -68,11 +67,11 @@ function Person({ person, crates, handleAddBottle }) {
         <DropdownButton
           variant="light"
           id="dropdown-basic-button"
-          title={<GiBeerBottle color={selectedCrate.color}></GiBeerBottle>}
+          title={<GiBeerBottle color={selectedCrate.color} />}
           onSelect={(event) => handleSelect(event)}>
           {colors.map((color) => (
             <Dropdown.Item eventKey={color.id}>
-              <GiBeerBottle color={color.color} size="2em"></GiBeerBottle>
+              <GiBeerBottle color={color.color} size="2em" />
             </Dropdown.Item>
           ))}
         </DropdownButton>
@@ -96,7 +95,7 @@ function Person({ person, crates, handleAddBottle }) {
         </Col>
         <Col xs={8} sm={9}>
           {person.bottles.map((beer) =>
-            drawBottles(beer.amount, crates.filter((crate) => crate._id == beer.crateId)[0].color)
+            drawBottles(beer.amount, crates.filter((crate) => crate._id === beer.crateId)[0].color)
           )}
         </Col>
         <Col xs={2} sm={1} className="d-flex justify-content-end">
@@ -112,19 +111,21 @@ function Person({ person, crates, handleAddBottle }) {
         style={{ display: "none", backgroundColor: "#434957", fontWeight: 300 }}
         id={person.name}>
         <Col>Total beers: {totalBeers(person.bottles)}</Col>
-        {person.bottles.map((beer) => (
-          <Col>{drawAmountBeer(beer.amount, crates.filter((crate) => crate._id == beer.crateId)[0])}</Col>
+        {person.bottles.map((beer, i) => (
+          <Col key={i}>
+            {drawAmountBeer(beer.amount, crates.filter((crate) => crate._id === beer.crateId)[0])}
+          </Col>
         ))}
       </Row>
     </>
   );
 }
 
-function PeopleList({ people, crates, handleAddBottle, handleAddPerson }) {
+function PeopleList({ people, crates, handleAddBottle }) {
   return (
     <div>
-      {people.map((person, i) => (
-        <Person person={person} key={i} crates={crates} handleAddBottle={handleAddBottle}></Person>
+      {people.map((person) => (
+        <Person person={person} key={person._id} crates={crates} handleAddBottle={handleAddBottle} />
       ))}
       <p className="h6" style={{ fontWeight: 200 }}>
         <em>Click on your name for more information!</em>

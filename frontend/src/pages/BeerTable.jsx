@@ -28,7 +28,6 @@ export default function BeerTable({ tableList }) {
       .addPerson(params.tableName, personData)
       .then((data) => setPeople([...people, data.json]))
       .catch((error) => console.log(error.message));
-    //setPeople([...people, person]);
   }
 
   //true: increase bottle for person. false: decrease bottle for person
@@ -40,24 +39,6 @@ export default function BeerTable({ tableList }) {
         setCrates(data.json.crates);
       })
       .catch((error) => console.log(error.message));
-
-    // const crate = crates.findIndex((crate) => crate.id == crateId);
-    // if (crates[crate].numBottles > 0) {
-    //   crates[crate].numBottles--;
-    //   //Could be simplified using above findIndex
-    //   for (let i = 0; i < people.length; i++) {
-    //     if (people[i].name === person) {
-    //       let bottles = people[i].bottles;
-    //       let bot = bottles.filter((bottle) => bottle.from_crate == crateId);
-    //       if (bot.length === 0) {
-    //         people[i].bottles.push({ from_crate: crateId, amount: 1 });
-    //       } else {
-    //         people[i].bottles[bot[0].from_crate - 1].amount++;
-    //       }
-    //       break;
-    //     }
-    //   }
-    // }
   }
 
   return (

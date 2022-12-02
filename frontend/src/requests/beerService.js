@@ -32,9 +32,9 @@ class beerService {
 
   /**
    * Adds a new crate to the table.
-   * @param {*} tableName
-   * @param {*} crate Full crate object
-   * @returns List of all crates
+   * @param {String} tableName
+   * @param {Object} crate Full crate object
+   * @returns Promise containing the created crate data
    */
   addCrate(tableName, crate) {
     return this.serverRequestGeneric("/api/crates", "POST", { tableName: tableName, crateData: crate });
@@ -46,7 +46,12 @@ class beerService {
     );
   }
 
-  //to return full people list
+  /**
+   * Add a new person to the table
+   * @param {String} tableName
+   * @param {Object} personData full person object
+   * @returns Promise containing the created person data
+   */
   addPerson(tableName, personData) {
     return this.serverRequestGeneric("/api/people", "POST", { tableName: tableName, personData: personData });
   }

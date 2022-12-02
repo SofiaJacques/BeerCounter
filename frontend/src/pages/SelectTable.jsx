@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import React from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Link } from "react-router-dom";
-import beerService from "../requests/beerService";
 
-function DropdownFunction({ tableList }) {
+export default function SelectTable({ tableList }) {
   return (
     <DropdownButton className="pb-2" id="dropdown-basic-button" variant="secondary" title="Join Table">
       {tableList.map((table) => (
@@ -18,5 +16,3 @@ function DropdownFunction({ tableList }) {
     </DropdownButton>
   );
 }
-
-export default DropdownFunction;

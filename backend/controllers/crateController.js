@@ -15,9 +15,10 @@ const addCrate = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Table not found");
   }
-  table.crates = [...table.crates, { ...crateData, totalBottles: crateData.numBottles }];
+  const crate = { ...crateData, totalBottles: crateData.numBottles };
+  table.crates = [...table.crates, crate];
   await table.save();
-  res.status(200).json({ json: table.crates });
+  res.status(200).json({ json: crate });
 });
 
 // @desc    create a table

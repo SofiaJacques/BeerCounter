@@ -19,16 +19,16 @@ function Crate(crate) {
 
 function CrateContainer({ crates, handleAddData }) {
   return (
-    <div>
+    <>
       <Row style={{ alignItems: "center" }} className="mb-5">
         {crates.map((crate) => (
-          <Crate key={crate.id} data={crate}></Crate>
+          <Crate key={crate._id} data={crate}></Crate>
         ))}
         <Col>
           <CreateCrate handleAddData={handleAddData}></CreateCrate>
         </Col>
       </Row>
-    </div>
+    </>
   );
 }
 

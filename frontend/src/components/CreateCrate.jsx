@@ -16,16 +16,17 @@ function CrateCrate({ handleAddData }) {
   };
   const [show, setShow] = useState(false);
   const [input, setInput] = useState(defaultInput);
+
   const handleClose = () => {
     setShow(false);
     setInput(defaultInput);
   };
+
   const handleShow = () => setShow(true);
 
   const handleInputChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
+    const name = event.target.name;
+    const value = event.target.value;
     setInput({ ...input, [name]: value });
   };
 
