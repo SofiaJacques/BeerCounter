@@ -20,7 +20,6 @@ export default function BeerTable({ tableList }) {
       .addCrate(params.tableName, crate)
       .then((data) => setCrates([...crates, data.json]))
       .catch((error) => console.log(error.message));
-    //setCrates([...crates, crate]);
   }
 
   function handleAddPerson(name) {
@@ -39,7 +38,6 @@ export default function BeerTable({ tableList }) {
       .then((data) => {
         setPeople(data.json.people);
         setCrates(data.json.crates);
-        return;
       })
       .catch((error) => console.log(error.message));
 

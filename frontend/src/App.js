@@ -7,18 +7,12 @@ import CreateTable from "./pages/CreateTable";
 import beerService from "./requests/beerService";
 
 function App() {
-  const [toggleFetch, settoggleFetch] = useState(true);
   const [datx, setData] = useState();
 
-  const updateFetch = () =>
-    beerService
-      .getTables()
-      .then((data) => setData(data))
-      .then(() => console.log("updated!"));
+  const updateFetch = () => beerService.getTables().then((data) => setData(data));
 
   useEffect(() => {
-    const data = beerService.getTables().then((data) => setData(data));
-    console.log("refreshed data");
+    beerService.getTables().then((data) => setData(data));
   }, []);
 
   return (

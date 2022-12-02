@@ -2,38 +2,42 @@ class beerService {
   async getTables() {
     const response = await fetch("/api/tables");
     const content = await response.json();
-    console.log("content", content);
     return content;
   }
 
+  /**
+   * Creates a new table. Cannot have empty name or existing name
+   * @param {*} tableName
+   * @returns
+   */
   addTable(tableName) {
-    return this.serverRequestGeneric("/api/tables", {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tableName: tableName }),
-    });
+    return this.serverRequestGeneric("/api/tables", "POST", { tableName: tableName });
   }
 
-  //increese beer count for person, decrease beer count for crate
+  /**
+   * Modifies beer count for a single person - also modifies crate total beers left count
+   * @param {*} tableName
+   * @param {*} crateId
+   * @param {*} personName
+   * @param {boolean} increase increase:[true|false] -> [increases|decreases] beer count for a person
+   * @returns [updated person list data, updated crate list data]
+   */
   updateBeerCount(tableName, crateId, personName, increase) {
-    return this.serverRequestGeneric(`api/tables/${tableName}`, {
-      method: "PUT",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ crateId: crateId, personName: personName, increase: increase }),
+    return this.serverRequestGeneric(`api/tables/${tableName}`, "PUT", {
+      crateId: crateId,
+      personName: personName,
+      increase: increase,
     });
   }
 
-  //Adding new  crate. To return full crate data
-  //Table name: Bugwiser
+  /**
+   * Adds a new crate to the table.
+   * @param {*} tableName
+   * @param {*} crate Full crate object
+   * @returns List of all crates
+   */
   addCrate(tableName, crate) {
-    return this.serverRequestGeneric("/api/crates", {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tableName: tableName, crateData: crate }),
-    });
+    return this.serverRequestGeneric("/api/crates", "POST", { tableName: tableName, crateData: crate });
   }
 
   updateCrate(tableId) {
@@ -44,26 +48,27 @@ class beerService {
 
   //to return full people list
   addPerson(tableName, personData) {
-    return this.serverRequestGeneric("/api/people", {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tableName: tableName, personData: personData }),
-    });
+    return this.serverRequestGeneric("/api/people", "POST", { tableName: tableName, personData: personData });
   }
   //update beer count for person and for crate
   updatePerson(tableId, crateId, personName) {
-    return fetch(`/api/people:${personName}`, {
-      method: "PUT",
-      body: { tableId: tableId, crateId: crateId, personName: personName },
-    }).then((response) => response.json());
+    return;
   }
 
-  //fetchURL: url
-  //options: { }
-  serverRequestGeneric(fetchURL, options) {
+  /**
+   * Generic api request
+   * @param  fetchURL api call url
+   * @param  method GET, POST, PUT or DELETE
+   * @return {Promise} Returns promise containing json message returned from the server
+   */
+  serverRequestGeneric(fetchURL, method, body) {
     return new Promise((resolve, reject) => {
-      fetch(fetchURL, options)
+      fetch(fetchURL, {
+        method: method,
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
         .then(this.parseJSON)
         .then((result) => {
           if (result.ok) return resolve(result.json);

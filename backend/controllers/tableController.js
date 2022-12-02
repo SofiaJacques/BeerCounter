@@ -2,25 +2,29 @@ const Table = require("../models/tableModel");
 const asyncHandler = require("express-async-handler");
 var mongoose = require("mongoose");
 
-// @desc    get tables
-// @route   GET /api/tables
-// @access  Private
+/**
+ * @desc    Get all tables from db
+ * @route   GET /api/tables
+ * @access  Private
+ */
 const getTables = asyncHandler(async (req, res) => {
   const tables = await Table.find(); //get all tables
   res.status(200).json({ tables });
 });
 
-// @desc    create a table
-// @route   POST /api/tables
-// @access  Private
+/**
+ * @desc    Creates a table
+ * @route   POST /api/tables
+ * @access  Private
+ */
 const createTable = asyncHandler(async (req, res) => {
-  if (!req.body.tableName) {
+  const tableName = req.body.tableName;
+  if (!tableName) {
     res.status(400);
     throw new Error("Please provide a table name");
   }
-  const tableName = req.body.tableName;
-  const foundTable = await Table.findOne({ name: tableName });
 
+  const foundTable = await Table.findOne({ name: tableName });
   if (foundTable) {
     res.status(400);
     throw new Error(`A table named \"${tableName}\" already exists. Please provide a new name.`);
@@ -36,11 +40,12 @@ const createTable = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    modify a table
-// @route   PUT /api/tables/:id
-// @access  Private
+/**
+ * @desc    Updates beer count of a table
+ * @route   PUT /api/tables
+ * @access  Private
+ */
 const modifyTable = asyncHandler(async (req, res) => {
-  console.log("entered");
   const { crateId, personName, increase } = req.body;
   const tableName = req.params.id;
   if (!crateId || !personName) {
@@ -61,11 +66,15 @@ const modifyTable = asyncHandler(async (req, res) => {
     if (bIx === -1) foundTable.people[pIx].bottles.push({ crateId: crateId, amount: 1 });
     else foundTable.people[pIx].bottles[bIx].amount++;
   } else if (!increase && foundTable.crates[cIx].totalBottles > bottlesLeft) {
-    if (bIx === -1 || foundTable.people[pIx].bottles[bIx].amount == 0) return;
-    else {
+    if (bIx === -1 || foundTable.people[pIx].bottles[bIx].amount == 0) {
+    } else {
       foundTable.people[pIx].bottles[bIx].amount--;
       foundTable.crates[cIx].numBottles++;
     }
+  } else if (bottlesLeft == 0) {
+    console.log("no beer");
+    res.status(400);
+    throw new Error("No more beers left in the crate");
   }
 
   foundTable
